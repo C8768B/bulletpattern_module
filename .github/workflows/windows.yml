@@ -1,0 +1,30 @@
+name: Windows Builds
+on: [push, pull_request]
+
+env:
+  GODOT_BASE_BRANCH: master
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      # Setup python
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          python-arch: "x64"
+      # Install scons
+      - name: Setup scons
+        shell: bash
+        run:  |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          scons --version
+    
+      - name: Build editor
+        uses: actions/checkout@master
+        with:
+          name: godotengine/godot
+          ref: refs/heads/master
+        
