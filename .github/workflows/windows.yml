@@ -40,10 +40,15 @@ jobs:
           repository: godotengine/godot
           
       - name: Clone bulletpattern_module
-        uses: actions/checkout@v2
+        shell: bash
+        run:  |
+          cd modules
+          git submodule add https://github.com/EmulatedSeasons/bulletpattern_module.git
+          cd ..
         
       - name: test
         shell: bash
         run:  |
           dir
+          dir modules
           pwd
