@@ -1,3 +1,5 @@
+/* bullet_pattern.h */
+
 #ifndef BULLET_PATTERN_H
 #define BULLET_PATTERN_H
 

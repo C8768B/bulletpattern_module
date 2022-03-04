@@ -8,11 +8,11 @@
 #include "bullet_manager.h"
 
 void register_bulletpattern_module_types() {
-    ClassDB::register_class<Bullet>();
+	ClassDB::register_class<Bullet>();
 	ClassDB::register_class<BulletPattern>();
-	ClassDB::register_class<BulletManager>();
+	GDREGISTER_CLASS(BulletManager);
 }
 
 void unregister_bulletpattern_module_types() {
-    // Nothing to do here
+	// Nothing to do here
 }
