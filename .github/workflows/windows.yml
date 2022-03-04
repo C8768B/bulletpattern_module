@@ -38,6 +38,10 @@ jobs:
         with:
           ref: refs/heads/master
           repository: godotengine/godot
+          
+      - name: Clone bulletpattern_module
+        uses: actions/checkout@v2
+        
       - name: test
         shell: bash
         run:  |
