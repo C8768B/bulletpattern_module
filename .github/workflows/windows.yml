@@ -49,6 +49,7 @@ jobs:
           cd modules
           git submodule add https://github.com/EmulatedSeasons/bulletpattern_module.git
           cd ..
+          mkdir ${{github.workspace}}/.scons-cache/
         
       - name: Setup scons cache
         uses: actions/cache@v2
