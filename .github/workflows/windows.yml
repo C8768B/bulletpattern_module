@@ -7,6 +7,7 @@ env:
 jobs:
   build-windows:
     runs-on: windows-latest
+    name: ${{ matrix.name }}
     strategy:
       fail-fast: false
       matrix:
@@ -46,9 +47,15 @@ jobs:
           git submodule add https://github.com/EmulatedSeasons/bulletpattern_module.git
           cd ..
         
+      - name: Compile godot
+        shell: bash
+        run:  |
+          scons -j2 p=windows target=${{ matrix.target }} tools=${{ matrix.tools }}
+        
       - name: test
         shell: bash
         run:  |
           dir
           dir modules
+          dir bin
           pwd
