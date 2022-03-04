@@ -36,6 +36,7 @@ jobs:
       - name: Clone godot
         uses: actions/checkout@v2
         with:
-          name: godotengine/godot
+          name: Godot
           ref: refs/heads/master
+          repository: godotengine/godot
         
