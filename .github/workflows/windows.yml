@@ -49,7 +49,6 @@ jobs:
           cd modules
           git submodule add https://github.com/EmulatedSeasons/bulletpattern_module.git
           cd ..
-          mkdir .scons-cache/
         
       - name: Setup scons cache
         uses: actions/cache@v2
@@ -61,7 +60,15 @@ jobs:
             ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
             ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}
             ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}
-        
+             
+      - name: test
+        shell: bash
+        run:  |
+          dir
+          dir modules
+          dir bin
+          pwd  
+      
       - name: Compile godot
         shell: bash
         env: |
@@ -70,11 +77,3 @@ jobs:
         run:  |
           scons -j2 p=windows target=${{ matrix.target }} tools=${{ matrix.tools }}
           dir -l bin
-        
-      - name: test
-        shell: bash
-        run:  |
-          dir
-          dir modules
-          dir bin
-          pwd
