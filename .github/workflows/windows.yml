@@ -3,6 +3,7 @@ on: [push, pull_request]
 
 env:
   GODOT_BASE_BRANCH: master
+  SCONS_CACHE_MSVC_CONFIG: true
 
 jobs:
   build-windows:
@@ -13,9 +14,11 @@ jobs:
       matrix:
         include:
           - name: Editor build
+            cache-name: windows-editor
             target: release_debug
             tools: true
           - name: Template build
+            cache-name: windows-template
             target: release
             tools: false
             sconsflags: debug_symbols=no
@@ -47,10 +50,24 @@ jobs:
           git submodule add https://github.com/EmulatedSeasons/bulletpattern_module.git
           cd ..
         
+      - name: Setup scons cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/.scons-cache
+          key: ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
+          restore-keys: |
+            ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
+            ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}
+            ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}
+        
       - name: Compile godot
         shell: bash
+        env: |
+          SCONS_CACHE: ${{ github.workspace }}/.scons-cache
+          SCONS_CACHE_LIMIT: 3072
         run:  |
           scons -j2 p=windows target=${{ matrix.target }} tools=${{ matrix.tools }}
+          dir -l bin
         
       - name: test
         shell: bash
