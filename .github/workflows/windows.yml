@@ -64,9 +64,8 @@ jobs:
       - name: test
         shell: bash
         run:  |
-          dir
-          dir modules
-          dir bin
+          dir -la
+          dir -la modules
           pwd  
       
       - name: Compile godot
