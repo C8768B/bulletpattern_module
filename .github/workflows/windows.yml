@@ -52,6 +52,7 @@ jobs:
         
       - name: Setup scons cache
         uses: actions/cache@v2
+        continue-on-error: true
         with:
           path: ${{ github.workspace }}/.scons-cache
           key: ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
@@ -63,7 +64,7 @@ jobs:
       - name: Compile godot
         shell: bash
         env: |
-          SCONS_CACHE: "${{ github.workspace }}/.scons-cache"
+          SCONS_CACHE: "${{ github.workspace }}/.scons-cache/"
           SCONS_CACHE_LIMIT: 3072
         run:  |
           scons -j2 p=windows target=${{ matrix.target }} tools=${{ matrix.tools }}
