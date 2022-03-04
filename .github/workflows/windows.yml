@@ -50,7 +50,7 @@ jobs:
       - name: Compile godot
         shell: bash
         run:  |
-          echo $(nproc)
+          scons -j2 p=windows target=${{ matrix.target }} tools=${{ matrix.tools }}
         
       - name: test
         shell: bash
