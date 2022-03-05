@@ -1,0 +1,93 @@
+name: Windows Builds
+on: [push, pull_request]
+
+env:
+  GODOT_BASE_BRANCH: master
+  SCONS_CACHE: "${{github.workspace}}/.scons-cache/"
+  SCONS_CACHE_LIMIT: 3072
+  SCONS_CACHE_MSVC_CONFIG: true
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Editor build
+            cache-name: windows-editor
+            target: release_debug
+            tools: true
+          - name: Template build
+            cache-name: windows-template
+            target: release
+            tools: false
+            sconsflags: debug_symbols=no
+    steps:
+      # Setup python
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+      # Install scons
+      - name: Setup scons
+        shell: bash
+        run:  |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons
+          scons --version
+    
+      - name: Clone godot
+        uses: actions/checkout@v2
+        with:
+          ref: refs/heads/master
+          repository: godotengine/godot
+          
+      - name: Clone bulletpattern_module
+        shell: bash
+        run:  |
+          cd modules
+          git submodule add https://github.com/EmulatedSeasons/bulletpattern_module.git
+          cd ..
+        
+      - name: Setup scons cache
+        uses: actions/cache@v2
+        continue-on-error: true
+        with:
+          path: "${{github.workspace}}/.scons-cache/"
+          key: ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
+          restore-keys: |
+            ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}-${{github.sha}}
+            ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}-${{github.ref}}
+            ${{matrix.name}}-${{env.GODOT_BASE_BRANCH}}
+             
+      - name: test
+        shell: bash
+        run:  |
+          dir -la
+          dir -la modules
+          pwd  
+      
+      - name: Compile godot
+        shell: bash
+        run:  |
+          scons -j2 p=windows target=${{ matrix.target }} tools=${{ matrix.tools }}
+          dir -l bin
+        
+      - name: Prepare artifact
+        run: |
+          Remove-Item bin/* -Include *.exp,*.lib,*.pdb -Force
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{matrix.cache-name}}
+          path: bin/*
+          retention-days: 14
+        
+      - name: test2
+        shell: bash
+        run:  |
+          dir -la
