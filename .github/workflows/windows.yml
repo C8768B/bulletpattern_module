@@ -71,7 +71,7 @@ jobs:
       - name: Compile godot
         shell: bash
         env: |
-          SCONS_CACHE: "${{github.workspace}}/.scons-cache/"
+          
           SCONS_CACHE_LIMIT: 3072
         run:  |
           scons -j2 p=windows target=${{ matrix.target }} tools=${{ matrix.tools }}
