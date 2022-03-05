@@ -75,6 +75,18 @@ jobs:
         run:  |
           scons -j2 p=windows target=${{ matrix.target }} tools=${{ matrix.tools }}
           dir -l bin
+        
+      - name: Prepare artifact
+        run: |
+          Remove-Item bin/* -Include *.exp,*.lib,*.pdb -Force
+          
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{matrix.cache-name}}
+          path: bin/*
+          retention-days: 14
+        
       - name: test2
         shell: bash
         run:  |
