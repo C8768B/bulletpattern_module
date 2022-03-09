@@ -10,7 +10,7 @@
 #include "scene/main/node.h"
 
 class Bullet : public Sprite2D {
-    GDCLASS(Bullet, Sprite2D);
+	GDCLASS(Bullet, Sprite2D);
 
 public:
 	enum BulletType
@@ -18,13 +18,15 @@ public:
 		BULLET_BASIC,
 	};
 
+	Bullet();
+	~Bullet();
+
 private:
-	
+	BulletManager::BulletProperties properties;
 
 protected:
+	void _notification(int p_notification);
 	static void _bind_methods();
-
-	
 };
 
 VARIANT_ENUM_CAST(Bullet::BulletType);
