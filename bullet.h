@@ -27,6 +27,8 @@ private:
 	BulletManager::BulletProperties properties;
 	VisibleOnScreenNotifier2D *visibility_notifier;
 
+	void remove_bullet();
+
 protected:
 	void _notification(int p_notification);
 	static void _bind_methods();

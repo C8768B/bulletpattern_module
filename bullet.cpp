@@ -29,6 +29,10 @@ void Bullet::_notification(int p_notification) {
 	}
 }
 
+void Bullet::remove_bullet() {
+
+}
+
 void Bullet::_bind_methods() {
 	BIND_ENUM_CONSTANT(BULLET_BASIC);
 }
@@ -40,6 +44,5 @@ Bullet::Bullet() {
 }
 
 Bullet::~Bullet() {
-	// Process will not stop unless unset.
-	//set_process(false);
+	
 }
