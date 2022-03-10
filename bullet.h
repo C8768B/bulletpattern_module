@@ -7,7 +7,9 @@
 
 #include "core/object/class_db.h"
 #include "scene/2d/sprite_2d.h"
+#include "scene/2d/visible_on_screen_notifier_2d.h"
 #include "scene/main/node.h"
+
 
 class Bullet : public Sprite2D {
 	GDCLASS(Bullet, Sprite2D);
@@ -23,6 +25,7 @@ public:
 
 private:
 	BulletManager::BulletProperties properties;
+	VisibleOnScreenNotifier2D *visibility_notifier;
 
 protected:
 	void _notification(int p_notification);
