@@ -11,15 +11,12 @@
 BulletManager* bm = nullptr;
 
 void register_bulletpattern_module_types() {
-	ClassDB::register_class<Bullet>();
-	ClassDB::register_class<BulletPattern>();
 	GDREGISTER_CLASS(BulletManager);
-
 	bm = memnew(BulletManager);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("BulletManager", BulletManager::get_singleton(), "BulletManager"));
-}
 
-void register_bulletpattern_module_singletons() {
+	GDREGISTER_CLASS(Bullet);
+	GDREGISTER_CLASS(BulletPattern);
 	
 }
 
