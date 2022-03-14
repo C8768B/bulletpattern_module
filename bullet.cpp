@@ -34,6 +34,7 @@ void Bullet::remove_bullet() {
 }
 
 void Bullet::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("remove_bullet"), &remove_bullet);
 	BIND_ENUM_CONSTANT(BULLET_BASIC);
 }
 

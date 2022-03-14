@@ -3,18 +3,18 @@
 #ifndef BULLET_MANAGER_H
 #define BULLET_MANAGER_H
 
-// Unsure why class_db.h is needed for object.h to work
 #include "core/object/class_db.h"
 #include "core/object/object.h"
+#include "core/templates/vector.h"
 //#include "core/variant/variant.h"
 #include "core/variant/array.h"
+
+class Bullet;
 
 class BulletManager : public Object {
 	GDCLASS(BulletManager, Object);
 
 public:
-	void clear_bullets();
-
 	struct BulletProperties {
 		int speed = 0;
 		int acceleration = 0;
@@ -22,12 +22,16 @@ public:
 		int angle = 0;
 	};
 
+	void clear_bullets();
+	void add_bullet(int x, int y, int speed, int angle, String sprite_path);
+
 	BulletManager();
 	static BulletManager* get_singleton();
 	~BulletManager();
 
 private:
-	Array bullets;
+	//Vector<Bullet*> bullets;
+	//Array bullets;
 	BulletProperties bullet_properties;
 
 protected:
